@@ -2,7 +2,7 @@
 
 This KPI Trend Widget is the Cumulocity module federation plugin created using c8ycli. This plugin can be used in Application Builder or Cockpit. It shows current measurement value in realtime and a chart based on measurement values as datapoints in widget.
 
-<img src="/assets/img-preview.png" />
+<img src="./widget/assets/img-preview.png" />
 
 ### Please note that this plugin is in currently under BETA mode.
 
