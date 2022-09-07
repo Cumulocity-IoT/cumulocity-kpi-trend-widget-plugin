@@ -51,9 +51,9 @@
   },
   "c8y": {
     "application": {
-      "name": "cumulocity-kpi-trend-widget-plugin",
-      "contextPath": "cumulocity-kpi-trend-widget-plugin",
-      "key": "cumulocity-kpi-trend-widget-plugin-application-key",
+      "name": "KPI Trend",
+      "contextPath": "kpitrend-widget",
+      "key": "kpitrend-widget-application-key",
       "globalTitle": "Cumulocity KPI Trend Widget with Module Federation",
       "tabsHorizontal": true,
       "isPackage": true,
