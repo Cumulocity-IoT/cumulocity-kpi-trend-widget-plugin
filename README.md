@@ -19,7 +19,7 @@ This KPI Trend Widget is the Cumulocity module federation plugin created using c
 * Allows to upload custom image to represent the KPI.
 * Supports different chart types.
 
-## Prerequisite:
+## Prerequisite
    Cumulocity c8ycli >=1014.x.x
    
 ## Installation
