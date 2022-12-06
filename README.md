@@ -10,7 +10,7 @@ This KPI Trend Widget is the Cumulocity module federation plugin created using c
 
 |APPLICATION BUILDER | CUMULOCITY | KPI TREND WIDGET PLUGIN  |
 |--------------------|------------|--------------------------|
-| 1.4.x(coming soon) | >= 1015.x.x| 1.x.x                    |
+| 2.x.x(coming soon) | >= 1016.x.x| 1.x.x                    |
 
 ## Features
 * Supports measurements from a single device
@@ -20,7 +20,7 @@ This KPI Trend Widget is the Cumulocity module federation plugin created using c
 * Supports different chart types.
 
 ## Prerequisite
-   Cumulocity c8ycli >=1014.x.x
+   Cumulocity c8ycli >=1016.x.x
    
 ## Installation
 
