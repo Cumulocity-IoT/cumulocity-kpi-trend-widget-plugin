@@ -1,4 +1,4 @@
-# Cumulocity KPI Trend Widget Plugin [<img width="35" src="https://user-images.githubusercontent.com/67993842/97668428-f360cc80-1aa7-11eb-8801-da578bda4334.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget-plugin/releases/download/1.0.0-beta/cumulocity-kpi-trend-widget-plugin-1.0.0-beta.zip)
+# Cumulocity KPI Trend Widget Plugin [<img width="35" src="https://user-images.githubusercontent.com/67993842/97668428-f360cc80-1aa7-11eb-8801-da578bda4334.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget-plugin/releases/download/1.0.1-beta/cumulocity-kpi-trend-widget-plugin-1.0.1-beta.zip)
 
 This KPI Trend Widget is the Cumulocity module federation plugin created using c8ycli. This plugin can be used in Application Builder or Cockpit. It shows current measurement value in realtime and a chart based on measurement values as datapoints in widget.
 
