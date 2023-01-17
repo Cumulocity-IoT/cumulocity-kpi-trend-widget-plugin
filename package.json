@@ -1,9 +1,9 @@
 {
   "name": "cumulocity-kpi-trend-widget-plugin",
-  "version": "1.0.1-beta",
+  "version": "1.0.2-beta",
   "description": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
   "scripts": {
-    "start": "c8ycli server --env.beta=true",
+    "start": "c8ycli server",
     "build": "c8ycli build",
     "deploy": "c8ycli deploy",
     "postinstall": "ngcc",
@@ -11,7 +11,7 @@
     "postbuild": " gulp bundle"
   },
   "keywords": [],
-  "author": "Sheethal J R- Software AG, Global Presales",
+  "author": "Software AG, Global Presales",
   "license": "Apache-2.0",
   "dependencies": {
     "@angular/animations": "14.0.6",
@@ -49,18 +49,23 @@
     "gulp": "^4.0.2",
     "gulp-zip": "^5.0.1",
     "del": "^6.1.1",
-    "html-loader": "4.1.0"
+    "html-loader": "4.1.0",
+    "style-loader": "3.3.1"
   },
   "c8y": {
     "application": {
       "name": "KPI Trend",
+      "description": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
       "contextPath": "kpitrend-widget",
       "key": "kpitrend-widget-application-key",
-      "globalTitle": "Cumulocity KPI Trend Widget with Module Federation",
+      "globalTitle": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
       "tabsHorizontal": true,
       "isPackage": true,
       "noAppSwitcher": true,
       "package": "plugin",
+      "icon": {
+        "class": "fa fa-puzzle-piece"
+      },
       "requiredPlatformVersion": ">=1016.0.0",
       "exports": [
         {
