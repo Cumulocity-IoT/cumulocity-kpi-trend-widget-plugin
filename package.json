@@ -1,16 +1,20 @@
 {
   "name": "cumulocity-kpi-trend-widget-plugin",
-  "version": "1.0.2-beta",
+  "version": "1.0.2",
   "description": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
   "scripts": {
     "start": "c8ycli server",
-    "build": "c8ycli build",
+    "build": "c8ycli build --env.mode=production",
     "deploy": "c8ycli deploy",
     "postinstall": "ngcc",
     "prebuild": " gulp clean",
     "postbuild": " gulp bundle"
   },
-  "keywords": [],
+  "keywords": [
+    "Cumulocity",
+    "Plugin",
+    "Widget"
+  ],
   "author": "Software AG, Global Presales",
   "license": "Apache-2.0",
   "dependencies": {
@@ -56,9 +60,9 @@
     "application": {
       "name": "KPI Trend",
       "description": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
-      "contextPath": "kpitrend-widget",
-      "key": "kpitrend-widget-application-key",
-      "globalTitle": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
+      "contextPath": "sag-ps-pkg-kpitrend-widget",
+      "key": "sag-ps-pkg-kpitrend-widget-application-key",
+      "globalTitle": "This plugin shows current measurement value in realtime and a chart based on measurement values as datapoints.",
       "tabsHorizontal": true,
       "isPackage": true,
       "noAppSwitcher": true,
@@ -72,7 +76,7 @@
           "name": "Cumulocity KPI Trend Widget Plugin",
           "module": "KPITrendWidgetAppModule",
           "path": "./widget/kpitrend-widget.module.ts",
-          "description": "This widget shows a current measurement value in realtime and a chart based on measurement values as datapoints."
+          "description": "This plugin shows a current measurement value in realtime and a chart based on measurement values as datapoints."
         }
       ],
       "remotes": {
