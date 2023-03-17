@@ -58,8 +58,13 @@
   },
   "c8y": {
     "application": {
+<<<<<<< HEAD
       "name": "KPI Trend Widget",
       "description": "This plugin shows current measurement value in realtime and a chart based on measurement values as datapoints.",
+=======
+      "name": "KPI Trend",
+      "description": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
+>>>>>>> f6032947e938c1ad8e10b6b67387aeb018cc3e11
       "contextPath": "sag-ps-pkg-kpitrend-widget",
       "key": "sag-ps-pkg-kpitrend-widget-application-key",
       "globalTitle": "This plugin shows current measurement value in realtime and a chart based on measurement values as datapoints.",
