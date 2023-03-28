@@ -58,11 +58,11 @@
   },
   "c8y": {
     "application": {
-      "name": "KPI Trend",
+      "name": "KPI Trend Widget",
       "description": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
       "contextPath": "sag-ps-pkg-kpitrend-widget",
       "key": "sag-ps-pkg-kpitrend-widget-application-key",
-      "globalTitle": "This plugin shows current measurement value in realtime and a chart based on measurement values as datapoints.",
+      "globalTitle": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
       "tabsHorizontal": true,
       "isPackage": true,
       "noAppSwitcher": true,
@@ -76,7 +76,7 @@
           "name": "Cumulocity KPI Trend Widget",
           "module": "KPITrendWidgetAppModule",
           "path": "./widget/kpitrend-widget.module.ts",
-          "description": "This plugin shows a current measurement value in realtime and a chart based on measurement values as datapoints."
+          "description": "This widget shows a current measurement value in realtime and a chart based on measurement values as datapoints."
         }
       ],
       "remotes": {
