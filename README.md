@@ -1,4 +1,4 @@
-# Cumulocity KPI Trend Widget Plugin [<img width="35" src="https://user-images.githubusercontent.com/32765455/211497905-561e9197-18b9-43d5-a023-071d3635f4eb.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget-plugin/releases/download/1.0.2/cumulocity-kpi-trend-widget-plugin-1.0.2.zip)
+# Cumulocity KPI Trend Widget Plugin [<img width="35" src="https://user-images.githubusercontent.com/32765455/211497905-561e9197-18b9-43d5-a023-071d3635f4eb.png"/>](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget-plugin/releases/download/1.0.2/sag-ps-pkg-kpitrend-widget-1.0.2.zip)
 
 This KPI Trend Widget is the Cumulocity module federation plugin created using c8ycli. This plugin can be used in Application Builder or Cockpit. It shows current measurement value in realtime and a chart based on measurement values as datapoints in widget.
 
@@ -47,7 +47,7 @@ This KPI Trend Widget is the Cumulocity module federation plugin created using c
 
 ### Runtime Widget Deployment?
 
-* This widget support runtime deployment. Download [Runtime Binary](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget-plugin/releases/download/1.0.2/cumulocity-kpi-trend-widget-plugin-1.0.2.zip) and install via Administrations --> Ecosystems --> Applications --> Packages 
+* This widget support runtime deployment. Download [Runtime Binary](https://github.com/SoftwareAG/cumulocity-kpi-trend-widget-plugin/releases/download/1.0.2/sag-ps-pkg-kpitrend-widget-1.0.2.zip) and install via Administrations --> Ecosystems --> Applications --> Packages 
 
 ## QuickStart
 
