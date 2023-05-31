@@ -83,7 +83,13 @@
         "widget-plugin": [
           "KPITrendWidgetAppModule"
         ]
-      }
+      },
+      "copy": [
+        {
+          "from": "LICENSE",
+          "to": "LICENSE.txt"
+        }
+      ]
     },
     "cli": {}
   },
