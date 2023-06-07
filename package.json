@@ -1,6 +1,6 @@
 {
   "name": "cumulocity-kpi-trend-widget-plugin",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This widget shows current measurement value in realtime and a chart based on measurement values as datapoints.",
   "scripts": {
     "start": "c8ycli server",
@@ -83,7 +83,17 @@
         "widget-plugin": [
           "KPITrendWidgetAppModule"
         ]
-      }
+      },
+      "copy": [
+        {
+          "from": "widget/images/img-preview.png",
+          "to": "widget/images/img-preview.png"
+        },
+        {
+          "from": "LICENSE",
+          "to": "LICENSE.txt"
+        }
+      ]
     },
     "cli": {}
   },
