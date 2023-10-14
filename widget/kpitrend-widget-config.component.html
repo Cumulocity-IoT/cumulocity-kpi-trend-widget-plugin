@@ -11,12 +11,20 @@
 <input type="file" name="kpi-icon" class="form-control" alt="Icon" (change)="updateIconInConfig($event)" />
 
 <!-- Measurement -->
-<label for="measurement" translate style="margin-top: 25px;">
-      Measurement
-</label>
-<select [disabled]="measurementSeriesDisabled" class="form-control" name="measurement" [(ngModel)]="widgetInfo.measurement" (focus)="loadFragmentSeries()" (change)="updateConfig()">
-      <option [ngValue]="seriesValue" *ngFor="let seriesValue of supportedSeries">{{seriesValue}}</option>
-</select>
+<div class="row">
+      <div class="form-group col-sm-12 " *ngIf="configDevice">
+          <form [formGroup]="formGroup" >
+          <c8y-datapoint-selection-list
+              [minActiveCount]="1"
+              [maxActiveCount]="1"
+              [defaultFormOptions]="datapointSelectDefaultFormOptions"
+              [config]="datapointSelectionConfig"
+              formControlName="datapoints"
+              name="datapoints"
+          ></c8y-datapoint-selection-list>
+          </form>
+      </div>
+  </div>
 
 <!-- KPI Aggregation interval -->
 <label for="kpi-aggregation-interval" translate style="margin-top: 25px;">KPI aggregation interval (max. 2000 measurements considered)</label>

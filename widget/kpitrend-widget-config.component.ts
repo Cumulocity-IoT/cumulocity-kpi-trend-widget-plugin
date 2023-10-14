@@ -16,18 +16,44 @@
 * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FetchClient, IFetchResponse } from '@c8y/client';
+import { DatapointAttributesFormConfig, DatapointSelectorModalOptions, KPIDetails } from '@c8y/ngx-components/datapoint-selector';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+
+export function exactlyASingleDatapointActive(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const datapoints: any[] = control.value;
+    if (!datapoints || !datapoints.length) {
+      return null;
+    }
+    const activeDatapoints = datapoints.filter(datapoint => datapoint.__active);
+    if (activeDatapoints.length === 1) {
+      return null;
+    }
+    return { exactlyOneDatapointNeedsToBeActive: true };
+  };
+}
 
 @Component({
   selector: 'kpitrend-widget-config',
   templateUrl: './kpitrend-widget-config.component.html',
   styleUrls: ['./kpitrend-widget-config.component.css']
 })
-export class KPITrendWidgetConfig implements OnInit {
+export class KPITrendWidgetConfig implements OnInit,DoCheck {
   @Input() config: any = {};
-  
+
+  datapointSelectDefaultFormOptions: Partial<DatapointAttributesFormConfig> = {
+    showRange: false,
+    showChart: false,
+  };
+  datapointSelectionConfig: Partial<DatapointSelectorModalOptions> = {};
+  formGroup: ReturnType<KPITrendWidgetConfig['createForm']>;
+
   oldDeviceId: string = '';
   chartColorPickerClosed: boolean = true;
   kpiColorPickerClosed : boolean = true;
@@ -79,11 +105,28 @@ export class KPITrendWidgetConfig implements OnInit {
       color: '#1776bf'
     }
   }
+  configDevice=null;
+  private destroy$ = new Subject<void>();
+  constructor(private fetchClient: FetchClient, private formBuilder: FormBuilder, private form: NgForm) {}
 
-  constructor(private fetchClient: FetchClient) {}
+  ngDoCheck(): void {
+    if (this.config.device && this.config.device.id !== this.configDevice) {
+      this.configDevice = this.config.device.id;
+      const context = this.config.device;
+      if (context?.id) {
+        this.datapointSelectionConfig.contextAsset = context;
+        this.datapointSelectionConfig.assetSelectorConfig
+      }
+    }
+  }
 
   async ngOnInit() {
     try {
+      if (this.config.device && this.config.device.id) {
+        this.configDevice = this.config.device.id;
+        this.datapointSelectionConfig.contextAsset = this.config.device;
+        this.datapointSelectionConfig.assetSelectorConfig;
+      }
       // Editing an existing widget
       if(_.has(this.config, 'customwidgetdata')) {
         this.loadFragmentSeries();
@@ -91,6 +134,10 @@ export class KPITrendWidgetConfig implements OnInit {
       } else { // Adding a new widget
         _.set(this.config, 'customwidgetdata', this.widgetInfo);
       }
+      this.initForm();
+      this.formGroup.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.config.datapoints = [ ...value.datapoints ];
+    });
     } catch(e) {
       console.log("KPI Trend - "+e);
     }
@@ -184,6 +231,24 @@ export class KPITrendWidgetConfig implements OnInit {
 
   openKPIThresholdMediumColorPicker() {
     this.kpiThresholdMediumColorPickerClosed = false;
+  }
+
+  private initForm(): void {
+    this.formGroup = this.createForm();
+    this.form.form.addControl('config', this.formGroup);
+    if (this.config?.datapoints) {
+      this.formGroup.patchValue({ datapoints: this.config.datapoints });
+    }
+  }
+
+private createForm() {
+    return this.formBuilder.group({
+      datapoints: this.formBuilder.control(new Array<KPIDetails>(), [
+        Validators.required,
+        Validators.minLength(1),
+        exactlyASingleDatapointActive()
+      ])
+    });
   }
 
 }
