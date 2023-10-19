@@ -25,18 +25,17 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 
-export function exactlyASingleDatapointActive(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const datapoints: any[] = control.value;
-    if (!datapoints || !datapoints.length) {
-      return null;
-    }
-    const activeDatapoints = datapoints.filter(datapoint => datapoint.__active);
-    if (activeDatapoints.length === 1) {
-      return null;
-    }
-    return { exactlyOneDatapointNeedsToBeActive: true };
+export function singleDatapointValidation(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => { 
+    const datapoints: any[] = control.value; 
+    if (!datapoints || !datapoints.length) {  return null;  }  
+    const activeDatapointsList = datapoints.filter(datapoint => datapoint.__active);  
+    if (activeDatapointsList.length === 1) { 
+      return null;  
+    } 
+    return { singleDataPointActive: true }; 
   };
+
 }
 
 @Component({
@@ -44,7 +43,7 @@ export function exactlyASingleDatapointActive(): ValidatorFn {
   templateUrl: './kpitrend-widget-config.component.html',
   styleUrls: ['./kpitrend-widget-config.component.css']
 })
-export class KPITrendWidgetConfig implements OnInit,DoCheck {
+export class KPITrendWidgetConfig implements OnInit{
   @Input() config: any = {};
 
   datapointSelectDefaultFormOptions: Partial<DatapointAttributesFormConfig> = {
@@ -109,27 +108,10 @@ export class KPITrendWidgetConfig implements OnInit,DoCheck {
   private destroy$ = new Subject<void>();
   constructor(private fetchClient: FetchClient, private formBuilder: FormBuilder, private form: NgForm) {}
 
-  ngDoCheck(): void {
-    if (this.config.device && this.config.device.id !== this.configDevice) {
-      this.configDevice = this.config.device.id;
-      const context = this.config.device;
-      if (context?.id) {
-        this.datapointSelectionConfig.contextAsset = context;
-        this.datapointSelectionConfig.assetSelectorConfig
-      }
-    }
-  }
-
   async ngOnInit() {
     try {
-      if (this.config.device && this.config.device.id) {
-        this.configDevice = this.config.device.id;
-        this.datapointSelectionConfig.contextAsset = this.config.device;
-        this.datapointSelectionConfig.assetSelectorConfig;
-      }
       // Editing an existing widget
       if(_.has(this.config, 'customwidgetdata')) {
-        this.loadFragmentSeries();
         this.widgetInfo = _.get(this.config, 'customwidgetdata');
       } else { // Adding a new widget
         _.set(this.config, 'customwidgetdata', this.widgetInfo);
@@ -160,25 +142,6 @@ export class KPITrendWidgetConfig implements OnInit,DoCheck {
       this.kpiThresholdMediumColorPickerClosed = true;
     }
     _.set(this.config, 'customwidgetdata', this.widgetInfo);
-  }
-
-  public async loadFragmentSeries(): Promise<void> {
-    if( !_.has(this.config, "device.id")) {
-      console.log("Cannot get fragment series because device id is blank.");
-    } else {
-      if(this.oldDeviceId !== this.config.device.id) {
-        this.measurementSeriesDisabled = true;
-        this.fetchClient.fetch('/inventory/managedObjects/'+ this.config.device.id +'/supportedSeries').then((resp: IFetchResponse) => {
-          this.measurementSeriesDisabled = false;
-          if(resp !== undefined) {
-            resp.json().then((jsonResp) => {
-              this.supportedSeries = jsonResp.c8y_SupportedSeries;
-            });
-          }
-          this.oldDeviceId = this.config.device.id;
-        });
-      }
-    }
   }
 
   setSelectedColorForKPI(value: string) {
@@ -246,7 +209,7 @@ private createForm() {
       datapoints: this.formBuilder.control(new Array<KPIDetails>(), [
         Validators.required,
         Validators.minLength(1),
-        exactlyASingleDatapointActive()
+        singleDatapointValidation()
       ])
     });
   }
