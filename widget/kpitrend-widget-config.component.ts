@@ -16,18 +16,43 @@
 * limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { FetchClient, IFetchResponse } from '@c8y/client';
+import { DatapointAttributesFormConfig, DatapointSelectorModalOptions, KPIDetails } from '@c8y/ngx-components/datapoint-selector';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+
+export function singleDatapointValidation(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => { 
+    const datapoints: any[] = control.value; 
+    if (!datapoints || !datapoints.length) {  return null;  }  
+    const activeDatapointsList = datapoints.filter(datapoint => datapoint.__active);  
+    if (activeDatapointsList.length === 1) { 
+      return null;  
+    } 
+    return { singleDataPointActive: true }; 
+  };
+
+}
 
 @Component({
   selector: 'kpitrend-widget-config',
   templateUrl: './kpitrend-widget-config.component.html',
   styleUrls: ['./kpitrend-widget-config.component.css']
 })
-export class KPITrendWidgetConfig implements OnInit {
+export class KPITrendWidgetConfig implements OnInit{
   @Input() config: any = {};
-  
+
+  datapointSelectDefaultFormOptions: Partial<DatapointAttributesFormConfig> = {
+    showRange: false,
+    showChart: false,
+  };
+  datapointSelectionConfig: Partial<DatapointSelectorModalOptions> = {};
+  formGroup: ReturnType<KPITrendWidgetConfig['createForm']>;
+
   oldDeviceId: string = '';
   chartColorPickerClosed: boolean = true;
   kpiColorPickerClosed : boolean = true;
@@ -79,18 +104,22 @@ export class KPITrendWidgetConfig implements OnInit {
       color: '#1776bf'
     }
   }
-
-  constructor(private fetchClient: FetchClient) {}
+  configDevice=null;
+  private destroy$ = new Subject<void>();
+  constructor(private fetchClient: FetchClient, private formBuilder: FormBuilder, private form: NgForm) {}
 
   async ngOnInit() {
     try {
       // Editing an existing widget
       if(_.has(this.config, 'customwidgetdata')) {
-        this.loadFragmentSeries();
         this.widgetInfo = _.get(this.config, 'customwidgetdata');
       } else { // Adding a new widget
         _.set(this.config, 'customwidgetdata', this.widgetInfo);
       }
+      this.initForm();
+      this.formGroup.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.config.datapoints = [ ...value.datapoints ];
+    });
     } catch(e) {
       console.log("KPI Trend - "+e);
     }
@@ -113,25 +142,6 @@ export class KPITrendWidgetConfig implements OnInit {
       this.kpiThresholdMediumColorPickerClosed = true;
     }
     _.set(this.config, 'customwidgetdata', this.widgetInfo);
-  }
-
-  public async loadFragmentSeries(): Promise<void> {
-    if( !_.has(this.config, "device.id")) {
-      console.log("Cannot get fragment series because device id is blank.");
-    } else {
-      if(this.oldDeviceId !== this.config.device.id) {
-        this.measurementSeriesDisabled = true;
-        this.fetchClient.fetch('/inventory/managedObjects/'+ this.config.device.id +'/supportedSeries').then((resp: IFetchResponse) => {
-          this.measurementSeriesDisabled = false;
-          if(resp !== undefined) {
-            resp.json().then((jsonResp) => {
-              this.supportedSeries = jsonResp.c8y_SupportedSeries;
-            });
-          }
-          this.oldDeviceId = this.config.device.id;
-        });
-      }
-    }
   }
 
   setSelectedColorForKPI(value: string) {
@@ -184,6 +194,24 @@ export class KPITrendWidgetConfig implements OnInit {
 
   openKPIThresholdMediumColorPicker() {
     this.kpiThresholdMediumColorPickerClosed = false;
+  }
+
+  private initForm(): void {
+    this.formGroup = this.createForm();
+    this.form.form.addControl('config', this.formGroup);
+    if (this.config?.datapoints) {
+      this.formGroup.patchValue({ datapoints: this.config.datapoints });
+    }
+  }
+
+private createForm() {
+    return this.formBuilder.group({
+      datapoints: this.formBuilder.control(new Array<KPIDetails>(), [
+        Validators.required,
+        Validators.minLength(1),
+        singleDatapointValidation()
+      ])
+    });
   }
 
 }

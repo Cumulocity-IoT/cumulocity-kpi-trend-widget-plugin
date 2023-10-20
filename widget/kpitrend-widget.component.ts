@@ -204,17 +204,16 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
   
   // ngOnInit()
   async ngOnInit(): Promise<void> {
-
     try {
       // Get Creation Timestamp
       this.creationTimestamp = _.get(this.config, 'customwidgetdata.metadata.creationTimestamp');
 
       // Get Device Id
-      this.device.id = _.get(this.config, 'device.id');
-      if(this.device.id === undefined || this.device.id.length === 0) {
-        this.validation.measurement = false;
-        console.log("Device is not selected. Will not be fetching measurements.");
-      }
+      if(this.config.datapoints && this.config.datapoints.length > 0){
+        const dataPointsObj = this.config.datapoints.find( dp => dp.__active == true);
+        this.device.id=dataPointsObj.__target.id;
+    }
+
 
       // Get KPI Title
       this.kpi.title = _.get(this.config, 'customwidgetdata.metadata.title');
@@ -231,13 +230,10 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
       }
 
       // Get Measurement
-      this.measurement.name = _.get(this.config, 'customwidgetdata.measurement');
-      if(this.measurement.name === undefined || this.measurement.name.length === 0) {
-        this.validation.measurement = false;
-        console.log("Measurement is not provided. Will not be fetching measurements.");
-      } else {
-        this.measurement.fragment = this.measurement.name.split(".")[0];
-        this.measurement.series = this.measurement.name.split(".")[1];
+        if(this.config.datapoints && this.config.datapoints.length > 0){
+          const dataPointsObj = this.config.datapoints.find( dp => dp.__active == true);
+          this.measurement.fragment = dataPointsObj.fragment;
+          this.measurement.series=dataPointsObj.series;
       }
 
       // Get KPI Color
