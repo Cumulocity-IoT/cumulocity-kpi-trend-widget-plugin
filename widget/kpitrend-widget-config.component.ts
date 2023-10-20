@@ -16,9 +16,9 @@
 * limitations under the License.
  */
 
-import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { FetchClient, IFetchResponse } from '@c8y/client';
+import { FetchClient } from '@c8y/client';
 import { DatapointAttributesFormConfig, DatapointSelectorModalOptions, KPIDetails } from '@c8y/ngx-components/datapoint-selector';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
