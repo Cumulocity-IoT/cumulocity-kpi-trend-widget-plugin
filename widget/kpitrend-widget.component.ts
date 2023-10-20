@@ -17,7 +17,7 @@
 */
 
 import { formatDate } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { MeasurementService, Realtime } from '@c8y/ngx-components/api';
 import * as _ from 'lodash';
 import { Chart } from 'chart.js';
