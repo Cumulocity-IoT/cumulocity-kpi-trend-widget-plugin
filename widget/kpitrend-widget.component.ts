@@ -116,7 +116,7 @@ export class KPITrendWidget implements OnInit, AfterViewInit, OnDestroy {
   private datetimeFormat: string = 'yyyy-MM-ddTHH:mm:ssZ';
   private maxPageSize: number = 2000;
 
-  private subs: object;
+  private subs: any;
 
   private device: Device = {
     id: ''
